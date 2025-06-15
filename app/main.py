@@ -1,3 +1,4 @@
+import hashlib
 import sys
 import os
 import zlib
@@ -26,6 +27,14 @@ def main():
             data = zlib.decompress(f.read()).decode("utf-8")
             header, content = data.split("\x00")
             print(content, end="")
+    if command == "hash-object":
+        filename = sys.argv[3]
+        with open(git_objects_path/filename) as f:
+            object_hash = hashlib.sha1(f)
+            print(object_hash)
+        if sys.argv[2] != "-w":
+            #TODO: handle this
+            ...
 
     else:
         raise RuntimeError(f"Unknown command #{command}")
